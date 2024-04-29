@@ -9,16 +9,15 @@ use ieee.std_logic_unsigned.all;
 
 entity UART_RX_FSM is
     port(
-       CLK : in std_logic;
-       RST : in std_logic;
-       DIN : in std_logic;
-   --    DONE_BIT : in std_logic_vector(1 downto 0);                            
-       ACTION_COUNTER : in std_logic_vector(4 downto 0);    
-       CLOCK_ACTIVE : out std_logic;                       
-       BIT_COUNT : in std_logic_vector(3 downto 0);        
-       DATA_RECEIVING : out std_logic;                     
-       DATA_VALID : out std_logic                          
-    );
+        CLK                   : in std_logic;                     
+        RST                   : in std_logic;                     
+        DIN                   : in std_logic;                     
+        CLK_CYCLE_CNT         : in std_logic_vector(4 downto 0);  
+        CLK_CYCLE_ACTIVE      : out std_logic;                    
+        BIT_CNT               : in std_logic_vector(3 downto 0);  
+        DATA_RECIEVE_ACTIVE   : out std_logic;                    
+        DATA_VALIDATE_ACTIVE  : out std_logic                     
+     );
 end entity;
 
 architecture behavioral of UART_RX_FSM is
