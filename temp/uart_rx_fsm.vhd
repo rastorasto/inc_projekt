@@ -12,8 +12,7 @@ entity UART_RX_FSM is
         RST             : in std_logic;                     
         DIN             : in std_logic;                     
         ACTION_COUNTER  : in std_logic_vector(4 downto 0);  
-        BIT_COUNTER     : in std_logic_vector(3 downto 0);
-        FINAL_BIT       : in std_logic_vector(1 downto 0);
+        BIT_COUNTER     : in std_logic_vector(3 downto 0); 
         CLOCK_ACTIVE    : out std_logic;
         VALIDATING_DATA : out std_logic;                 
         RECEIVING_DATA  : out std_logic                                       
@@ -49,8 +48,7 @@ begin
                         cur_state <= READ_BIT; 
                     end if;
                 when READ_BIT =>
-                  --  if BIT_COUNTER = "1000" then 
-                    if FINAL_BIT = "11" then
+                    if BIT_COUNTER = "1000" then 
                         cur_state <= WAIT_STOP; 
                     end if;
                 when WAIT_STOP =>
