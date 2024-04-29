@@ -75,32 +75,57 @@ begin
                     if next_bit_clock >= "1111" then
                         next_bit_clock <= "0000";
                         
-                    case bit_count is
-                        when "000" =>
-                            DOUT(0) <= DIN;
-                            bit_count <= "001";
-                        when "001" =>
-                            DOUT(1) <= DIN;
-                            bit_count <= "010";
-                        when "010" =>
-                            DOUT(2) <= DIN;
-                            bit_count <= "011";
-                        when "011" =>
-                            DOUT(3) <= DIN;
-                            bit_count <= "100";
-                        when "100" =>
-                            DOUT(4) <= DIN;
-                            bit_count <= "101";
-                        when "101" =>
-                            DOUT(5) <= DIN;
-                            bit_count <= "110";
-                        when "110" =>
-                            DOUT(6) <= DIN;
-                            bit_count <= "111";
-                        when "111" =>
-                            DOUT(7) <= DIN;
-                        when others => null;
-                    end case;
+                    -- case bit_count is
+                    --     when "000" =>
+                    --         DOUT(0) <= DIN;
+                    --         bit_count <= "001";
+                    --     when "001" =>
+                    --         DOUT(1) <= DIN;
+                    --         bit_count <= "010";
+                    --     when "010" =>
+                    --         DOUT(2) <= DIN;
+                    --         bit_count <= "011";
+                    --     when "011" =>
+                    --         DOUT(3) <= DIN;
+                    --         bit_count <= "100";
+                    --     when "100" =>
+                    --         DOUT(4) <= DIN;
+                    --         bit_count <= "101";
+                    --     when "101" =>
+                    --         DOUT(5) <= DIN;
+                    --         bit_count <= "110";
+                    --     when "110" =>
+                    --         DOUT(6) <= DIN;
+                    --         bit_count <= "111";
+                    --     when "111" =>
+                    --         DOUT(7) <= DIN;
+                    --     when others => null;
+                    -- end case;
+                    if bit_count = "000" then
+                        DOUT(0) <= DIN;
+                        bit_count <= "001";
+                    elsif bit_count = "001" then
+                        DOUT(1) <= DIN;
+                        bit_count <= "010";
+                    elsif bit_count = "010" then
+                        DOUT(2) <= DIN;
+                        bit_count <= "011";
+                    elsif bit_count = "011" then
+                        DOUT(3) <= DIN;
+                        bit_count <= "100";
+                    elsif bit_count = "100" then
+                        DOUT(4) <= DIN;
+                        bit_count <= "101";
+                    elsif bit_count = "101" then
+                        DOUT(5) <= DIN;
+                        bit_count <= "110";
+                    elsif bit_count = "110" then
+                        DOUT(6) <= DIN;
+                        bit_count <= "111";
+                    elsif bit_count = "111" then
+                        DOUT(7) <= DIN;
+                    end if;
+
                     end if;
             end if;
         end if;
