@@ -70,7 +70,7 @@ begin
                     action_counter <= (others => '0');
 
                     for i in DOUT'range loop
-                        if bit_counter = to_unsigned(i, 4) then
+                        if bit_counter = i then
                             DOUT(i) <= din;
                             bit_counter <= bit_counter + 1;
                             exit;  -- Exit loop after setting the corresponding bit
