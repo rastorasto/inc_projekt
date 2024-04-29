@@ -29,9 +29,9 @@ architecture behavioral of UART_RX is
 begin
     fsm: entity work.UART_RX_FSM
     port map (
-        CLK => CLK,
-        RST => RST,
-        DIN => DIN,
+        CLK => clk,
+        RST => rst,
+        DIN => din,
         ACTION_COUNTER => action_counter,
         CLOCK_ACTIVE => clock_active,
         BIT_COUNTER => bit_counter,
@@ -40,15 +40,15 @@ begin
     );
 
     
-    process (CLK) begin
+    process (clk) begin
         
-        if RST = '1' then
+        if rst = '1' then
             DOUT_VLD <= '0';          
             DOUT <= (others => '0');  
             action_counter <= "00000"; 
             bit_counter <= "0000";        
 
-        elsif rising_edge(CLK) then
+        elsif rising_edge(clk) then
 
             if clock_active = '0' then 
                 action_counter <= "00000"; 
@@ -72,28 +72,28 @@ begin
                     
                     case bit_counter is
                         when "0000" => 
-                            DOUT(0) <= DIN;    
+                            DOUT(0) <= din;    
                             bit_counter <= "0001"; 
                         when "0001" => 
-                            DOUT(1) <= DIN;    
+                            DOUT(1) <= din;    
                             bit_counter <= "0010"; 
                         when "0010" => 
-                            DOUT(2) <= DIN;    
+                            DOUT(2) <= din;    
                             bit_counter <= "0011"; 
                         when "0011" => 
-                            DOUT(3) <= DIN;    
+                            DOUT(3) <= din;    
                             bit_counter <= "0100"; 
                         when "0100" => 
-                            DOUT(4) <= DIN;    
+                            DOUT(4) <= din;    
                             bit_counter <= "0101"; 
                         when "0101" => 
-                            DOUT(5) <= DIN;    
+                            DOUT(5) <= din;    
                             bit_counter <= "0110"; 
                         when "0110" => 
-                            DOUT(6) <= DIN;    
+                            DOUT(6) <= din;    
                             bit_counter <= "0111"; 
                         when "0111" => 
-                            DOUT(7) <= DIN;    
+                            DOUT(7) <= din;    
                             bit_counter <= "1000";
                         when others => null;   
                     end case;
