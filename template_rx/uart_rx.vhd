@@ -65,7 +65,7 @@ begin
                 
                 DOUT_VLD <= '0';
 
-                if bit_count = "111" then
+                if bit_count = "000" then
                     if data_valid = '1' then
                         DOUT_VLD <= '1';
                         bit_count <= "000";
@@ -76,31 +76,33 @@ begin
                     if next_bit_clock >= "1111" then
                         next_bit_clock <= "0000";
                         
-                        if bit_count = "000" then
+                    case bit_count is
+                        when bit_count = "000" =>
                             DOUT(0) <= DIN;
                             bit_count <= "001";
-                        elsif bit_count = "001" then
+                        when bit_count = "001" =>
                             DOUT(1) <= DIN;
                             bit_count <= "010";
-                        elsif bit_count = "010" then
+                        when bit_count = "010" =>
                             DOUT(2) <= DIN;
                             bit_count <= "011";
-                        elsif bit_count = "011" then
+                        when bit_count = "011" =>
                             DOUT(3) <= DIN;
                             bit_count <= "100";
-                        elsif bit_count = "100" then
+                        when bit_count = "100" =>
                             DOUT(4) <= DIN;
                             bit_count <= "101";
-                        elsif bit_count = "101" then
+                        when bit_count = "101" =>
                             DOUT(5) <= DIN;
                             bit_count <= "110";
-                        elsif bit_count = "110" then
+                        when bit_count = "110" =>
                             DOUT(6) <= DIN;
                             bit_count <= "111";
-                        elsif bit_count = "111" then
+                        when bit_count = "111" =>
                             DOUT(7) <= DIN;
-                           -- bit_count <= "000";
-                        end if;
+                            bit_count <= "000";
+                        when others => null;
+                    end case;
                     end if;
             end if;
         end if;
