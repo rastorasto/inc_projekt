@@ -19,11 +19,12 @@ end entity;
 
 -- Architecture implementation (INSERT YOUR IMPLEMENTATION HERE)
 architecture behavioral of UART_RX is
-    signal ACTION_COUNTER        : std_logic_vector(4 downto 0) := "00000";  
-    signal CLOCK_ACTIVE     : std_logic := '0';                         
-    signal BIT_COUNTER              : std_logic_vector(3 downto 0) := "0000";   
-    signal RECEIVING_DATA  : std_logic := '0';                         
-    signal VALIDATING_DATA : std_logic := '0';                         
+    signal ACTION_COUNTER : std_logic_vector(4 downto 0) := "00000"; 
+    signal BIT_COUNTER    : std_logic_vector(3 downto 0) := "0000"; 
+    signal FINAL_BIT      : std_logic_vector(1 downto 0) := "00";
+    signal CLOCK_ACTIVE   : std_logic := '0'; 
+    signal VALIDATING_DATA: std_logic := '0';                           
+    signal RECEIVING_DATA : std_logic := '0';                                                 
 
 
 begin
@@ -35,6 +36,7 @@ begin
         ACTION_COUNTER => action_counter,
         CLOCK_ACTIVE => clock_active,
         BIT_COUNTER => bit_counter,
+        FINAL_BIT => final_bit,
         RECEIVING_DATA => receiving_data,
         VALIDATING_DATA => validating_data
     );
@@ -46,6 +48,7 @@ begin
             DOUT_VLD <= '0';          
             DOUT <= (others => '0');  
             action_counter <= "00000"; 
+            final_bit <= "00";
             bit_counter <= "0000";        
 
         elsif rising_edge(CLK) then
@@ -67,7 +70,7 @@ begin
 
             if receiving_data = '1' then 
                 if action_counter >= "01111" then 
-                    action_counter <= "00001"; 
+                    action_counter <= "00000"; 
 
                     
                     case bit_counter is
@@ -94,7 +97,7 @@ begin
                             bit_counter <= "0111"; 
                         when "0111" => 
                             DOUT(7) <= DIN;    
-                            bit_counter <= "1000"; 
+                            final_bit <= "11"; 
                         when others => null;   
                     end case;
                 
