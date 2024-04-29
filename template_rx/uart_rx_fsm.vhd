@@ -60,7 +60,9 @@ begin
                         end if;
                     end if;
                 when VALIDATE =>
-                    state <= IDLE;
+                    if DOUT_VLD = '1' then
+                        state <= IDLE;
+                    end if;
             end case;
         end if;
     end process;
