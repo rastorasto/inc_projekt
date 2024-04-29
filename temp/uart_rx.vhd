@@ -72,8 +72,6 @@ begin
             if RECEIVING_DATA = '1' then 
                 if ACTION_COUNTER >= "10000" then 
                     ACTION_COUNTER <= "00001"; 
-
-                    
                     case BIT_COUNTER is
                         when "0000" => 
                             DOUT(0) <= DIN;    
@@ -100,7 +98,6 @@ begin
                             DOUT(7) <= DIN;    
                             BIT_COUNTER <= "1000";  
                     end case;
-
                 end if;
             end if;
         end if;
