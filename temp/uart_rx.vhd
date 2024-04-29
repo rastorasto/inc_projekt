@@ -19,7 +19,7 @@ end entity;
 
 -- Architecture implementation (INSERT YOUR IMPLEMENTATION HERE)
 architecture behavioral of UART_RX is
-    signal ACTION_COUNTER        : std_logic_vector(4 downto 0) := "00001";  
+    signal ACTION_COUNTER        : std_logic_vector(4 downto 0) := "00000";  
     signal CLOCK_ACTIVE     : std_logic := '0';                         
     signal BIT_COUNTER              : std_logic_vector(3 downto 0) := "0000";   
     signal RECEIVING_DATA  : std_logic := '0';                         
@@ -45,13 +45,13 @@ begin
         if RST = '1' then
             DOUT_VLD <= '0';          
             DOUT <= (others => '0');  
-            action_counter <= "00001"; 
+            action_counter <= "00000"; 
             bit_counter <= "0000";        
 
         elsif rising_edge(CLK) then
 
             if clock_active = '0' then 
-                action_counter <= "00001"; 
+                action_counter <= "00000"; 
             else  
                 action_counter <= action_counter + 1; 
             end if;
@@ -66,7 +66,7 @@ begin
             end if;
 
             if receiving_data = '1' then 
-                if action_counter >= "10000" then 
+                if action_counter >= "01111" then 
                     action_counter <= "00001"; 
 
                     
