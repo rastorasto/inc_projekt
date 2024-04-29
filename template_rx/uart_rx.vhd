@@ -22,8 +22,8 @@ end entity;
 
 -- Architecture implementation (INSERT YOUR IMPLEMENTATION HERE)
 architecture behavioral of UART_RX is
-    signal FIRST_BIT_MID        : std_logic_vector(4 downto 0) := "00000";                        
-    signal NEXT_BIT_CLOCK       : std_logic_vector(3 downto 0) := "0000"; 
+    signal ACTION_COUNTER        : std_logic_vector(4 downto 0) := "00000";                        
+    --signal NEXT_BIT_CLOCK       : std_logic_vector(3 downto 0) := "0000"; 
     signal BIT_COUNT            : std_logic_vector(2 downto 0) := "000";
     signal DONE_BIT             : std_logic_vector(1 downto 0) := "00";
     signal CLOCK_ACTIVE         : std_logic := '0';     
@@ -37,8 +37,8 @@ begin
         CLK => CLK,
         RST => RST,
         DIN => DIN,
-        FIRST_BIT_MID => first_bit_mid,
-        NEXT_BIT_CLOCK => next_bit_clock,
+        ACTION_COUNTER => action_counter,
+       -- NEXT_BIT_CLOCK => next_bit_clock,
         BIT_COUNT => bit_count,
         CLOCK_ACTIVE => clock_active,
         DATA_RECEIVING => data_receiving,
@@ -52,7 +52,7 @@ begin
                 DOUT <= (others => '0');
                 DOUT_VLD <= '0';
                 first_bit_mid <= "00000";
-                next_bit_clock <= "0000";
+               -- next_bit_clock <= "0000";
                 bit_count <= "000";
                 done_bit <= "00";
 
@@ -60,13 +60,9 @@ begin
 
                 if clock_active = '0' then
                     first_bit_mid <= "00000";
-                    next_bit_clock <= "0000";
+               --     next_bit_clock <= "0000";
                 else
-                    if(first_bit_mid > "10111") then
-                        next_bit_clock <= next_bit_clock + 1;
-                    else 
-                        first_bit_mid <= first_bit_mid + 1;
-                    end if;
+                    action_counter <= action_counter + 1;
                 end if;
                 
                 DOUT_VLD <= '0';
@@ -79,7 +75,7 @@ begin
                 end if;
 
                 if data_receiving = '1' then
-                    if next_bit_clock >= "1111" or FIRST_BIT_MID >= "10111" then
+                    if action_counter = "10000" then
                         next_bit_clock <= "0000";
                         
                         case bit_count is
