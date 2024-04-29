@@ -52,10 +52,8 @@ begin
                         cur_state <= WAIT_STOP; 
                     end if;
                 when WAIT_STOP =>
-                    if DIN = '1' then 
-                        if ACTION_COUNTER = "01110" then 
+                    if DIN = '1' and ACTION_COUNTER = "01110" then 
                             cur_state <= VALIDATING; 
-                        end if;
                     end if;
                 when VALIDATING =>
                     cur_state <= IDLE; 
