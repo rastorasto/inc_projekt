@@ -22,10 +22,9 @@ end entity;
 
 -- Architecture implementation (INSERT YOUR IMPLEMENTATION HERE)
 architecture behavioral of UART_RX is
-    signal ACTION_COUNTER        : std_logic_vector(4 downto 0) := "00000";                        
-    --signal NEXT_BIT_CLOCK       : std_logic_vector(3 downto 0) := "0000"; 
-    signal BIT_COUNT            : std_logic_vector(2 downto 0) := "000";
-    signal DONE_BIT             : std_logic_vector(1 downto 0) := "00";
+    signal ACTION_COUNTER        : std_logic_vector(4 downto 0) := "00000";                         
+    signal BIT_COUNT            : std_logic_vector(3 downto 0) := "0000";
+ --   signal DONE_BIT             : std_logic_vector(1 downto 0) := "00";
     signal CLOCK_ACTIVE         : std_logic := '0';     
     signal DATA_RECEIVING       : std_logic := '0';                         
     signal DATA_VALID           : std_logic := '0';                         
@@ -38,12 +37,11 @@ begin
         RST => RST,
         DIN => DIN,
         ACTION_COUNTER => action_counter,
-       -- NEXT_BIT_CLOCK => next_bit_clock,
         BIT_COUNT => bit_count,
         CLOCK_ACTIVE => clock_active,
         DATA_RECEIVING => data_receiving,
         DATA_VALID => data_valid,
-        DONE_BIT => done_bit
+      --  DONE_BIT => done_bit
     );
 
 
@@ -52,25 +50,23 @@ begin
                 DOUT <= (others => '0');
                 DOUT_VLD <= '0';
                 action_counter <= "00000";
-               -- next_bit_clock <= "0000";
-                bit_count <= "000";
-                done_bit <= "00";
+                bit_count <= "0000";
+            --    done_bit <= "00";
 
             elsif rising_edge(CLK) then
 
                 if clock_active = '0' then
                     action_counter <= "00000";
-               --     next_bit_clock <= "0000";
                 else
                     action_counter <= action_counter + 1;
                 end if;
                 
                 DOUT_VLD <= '0';
 
-                if bit_count = "111" then
+                if bit_count = "1111" then
                     if data_valid = '1' then
                         DOUT_VLD <= '1';
-                        bit_count <= "000";
+                        bit_count <= "0000";
                     end if;
                 end if;
 
@@ -79,30 +75,30 @@ begin
                         action_counter <= "00000";
                         
                         case bit_count is
-                            when "000" =>
+                            when "0000" =>
                                 DOUT(0) <= DIN;
-                                bit_count <= "001";
-                            when "001" =>
+                                bit_count <= "0001";
+                            when "0001" =>
                                 DOUT(1) <= DIN;
-                                bit_count <= "010";
-                            when "010" =>
+                                bit_count <= "0010";
+                            when "0010" =>
                                 DOUT(2) <= DIN;
-                                bit_count <= "011";
-                            when "011" =>
+                                bit_count <= "0011";
+                            when "0011" =>
                                 DOUT(3) <= DIN;
-                                bit_count <= "100";
-                            when "100" =>
+                                bit_count <= "0100";
+                            when "0100" =>
                                 DOUT(4) <= DIN;
-                                bit_count <= "101";
-                            when "101" =>
+                                bit_count <= "0101";
+                            when "0101" =>
                                 DOUT(5) <= DIN;
-                                bit_count <= "110";
-                            when "110" =>
+                                bit_count <= "0110";
+                            when "0110" =>
                                 DOUT(6) <= DIN;
-                                bit_count <= "111";
-                            when "111" =>
+                                bit_count <= "0111";
+                            when "0111" =>
                                 DOUT(7) <= DIN;
-                                done_bit <= "11";
+                                bit_count <= "1111";
                             when others => null;
                         end case;
 

@@ -14,9 +14,8 @@ entity UART_RX_FSM is
        DIN : in std_logic;
        DONE_BIT : in std_logic_vector(1 downto 0);                            -- Pocka na koniec prijatych dat
        ACTION_COUNTER : in std_logic_vector(4 downto 0);    -- Pocka do polovice prveho bitu
-      -- NEXT_BIT_CLOCK : in std_logic_vector(3 downto 0);   -- Pocka do polovice dalsieho bitu
        CLOCK_ACTIVE : out std_logic;                       -- Aktivuje hodiny
-       BIT_COUNT : in std_logic_vector(2 downto 0);        -- Pocitac bitov
+       BIT_COUNT : in std_logic_vector(3 downto 0);        -- Pocitac bitov
        DATA_RECEIVING : out std_logic;                     -- Prijimanie dat
        DATA_VALID : out std_logic                          -- Validita prijatych dat
     );
@@ -45,7 +44,7 @@ begin
                         state <= DATA_BIT;
                     end if;
                 when DATA_BIT =>
-                    if done_bit = "11" then
+                    if bit_count = "1111" then
                         state <= WAIT_STOP_BIT;
                     end if;
                 when WAIT_STOP_BIT =>
