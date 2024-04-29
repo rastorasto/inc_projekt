@@ -10,7 +10,7 @@ use ieee.std_logic_unsigned.all;
 entity UART_RX_FSM is
     port(
        CLK : in std_logic;
-       RST : in std_logic
+       RST : in std_logic;
        DIN : in std_logic;
        MIDDLE_BIT_CLOCK : in std_logic_vector(3 downto 0); -- Prejde do polovice bitu
        NEXT_BIT_CLOCK : in std_logic_vector(4 downto 0); -- Pocka do polovice dalsieho bitu
@@ -55,7 +55,8 @@ begin
                 when WAIT_STOP_BIT =>
                     if DIN = '1' then
                         if MIDDLE_BIT_CLOCK = "111" then
-                        state <= VALIDATE;
+                            state <= VALIDATE;
+                        end if;
                     end if;
                 when VALIDATE =>
                     state <= IDLE;
