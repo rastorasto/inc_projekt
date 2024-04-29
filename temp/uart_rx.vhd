@@ -26,7 +26,7 @@ architecture behavioral of UART_RX is
     signal CLOCK_ACTIVE     : std_logic := '0';                         
     signal BIT_COUNTER              : std_logic_vector(3 downto 0) := "0000";   
     signal RECEIVING_DATA  : std_logic := '0';                         
-    signal VALIDATE_DATA : std_logic := '0';                         
+    signal VALIDATING_DATA : std_logic := '0';                         
 
 begin
     fsm: entity work.UART_RX_FSM
@@ -38,7 +38,7 @@ begin
         CLOCK_ACTIVE => clock_active,
         BIT_COUNTER => bit_counter,
         RECEIVING_DATA => receiving_data,
-        VALIDATE_DATA => validate_data
+        VALIDATING_DATA => validating_data
     );
 
     
@@ -63,7 +63,7 @@ begin
             DOUT_VLD <= '0'; 
 
             if bit_counter = "1000" then 
-                if validate_data = '1' then 
+                if validating_data = '1' then 
                     bit_counter <= "0000"; 
                     DOUT_VLD <= '1'; 
                 end if;
