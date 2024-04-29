@@ -101,7 +101,7 @@ begin
                             bit_count <= "111";
                         elsif bit_count = "111" then
                             DOUT(7) <= DIN;
-                            bit_count <= "000";
+                           -- bit_count <= "000";
                         end if;
                     end if;
             end if;
