@@ -19,8 +19,8 @@ end entity;
 
 -- Architecture implementation (INSERT YOUR IMPLEMENTATION HERE)
 architecture behavioral of UART_RX is
-    signal ACTION_COUNTER : std_logic_vector(4 downto 0) := "00000"; 
-    signal BIT_COUNTER    : std_logic_vector(3 downto 0) := "0000"; 
+    signal ACTION_COUNTER : std_logic_vector(4 downto 0) := '0'; 
+    signal BIT_COUNTER    : std_logic_vector(3 downto 0) := '0'; 
     signal CLOCK_ACTIVE   : std_logic := '0'; 
     signal VALIDATING_DATA: std_logic := '0';                           
     signal RECEIVING_DATA : std_logic := '0';                                                 
@@ -45,13 +45,13 @@ begin
         if rst = '1' then
             DOUT_VLD <= '0';          
             DOUT <= (others => '0');  
-            action_counter <= "00000"; 
-            bit_counter <= "0000";        
+            action_counter <= '0'; 
+            bit_counter <= '0';        
 
         elsif rising_edge(clk) then
 
             if clock_active = '0' then 
-                action_counter <= "00000"; 
+                action_counter <= '0'; 
             else  
                 action_counter <= action_counter + 1; 
             end if;
@@ -60,42 +60,49 @@ begin
 
             if bit_counter = "1000" then 
                 if validating_data = '1' then 
-                    bit_counter <= "0000"; 
+                    bit_counter <= '0'; 
                     DOUT_VLD <= '1'; 
                 end if;
             end if;
 
             if receiving_data = '1' then 
                 if action_counter >= "01111" then 
-                    action_counter <= "00000"; 
+                    action_counter <= '0'; 
 
+                    for i in DOUT'range loop
+                        if bit_counter = i then
+                            DOUT(i) <= din;
+                            bit_counter <= bit_counter + 1;
+                            exit;  -- Exit loop after setting the corresponding bit
+                        end if;
+                    end loop;
                     
-                    case bit_counter is
-                        when "0000" => 
-                            DOUT(0) <= din;    
-                            bit_counter <= "0001"; 
-                        when "0001" => 
-                            DOUT(1) <= din;    
-                            bit_counter <= "0010"; 
-                        when "0010" => 
-                            DOUT(2) <= din;    
-                            bit_counter <= "0011"; 
-                        when "0011" => 
-                            DOUT(3) <= din;    
-                            bit_counter <= "0100"; 
-                        when "0100" => 
-                            DOUT(4) <= din;    
-                            bit_counter <= "0101"; 
-                        when "0101" => 
-                            DOUT(5) <= din;    
-                            bit_counter <= "0110"; 
-                        when "0110" => 
-                            DOUT(6) <= din;    
-                            bit_counter <= "0111"; 
-                        when "0111" => 
-                            DOUT(7) <= din;    
-                            bit_counter <= "1000";
-                        when others => null;   
+                    -- case bit_counter is
+                    --     when '0' => 
+                    --         DOUT(0) <= din;    
+                    --         bit_counter <= bit_counter + 1; 
+                    --     when "0001" => 
+                    --         DOUT(1) <= din;    
+                    --         bit_counter <= bit_counter + 1; 
+                    --     when "0010" => 
+                    --         DOUT(2) <= din;    
+                    --         bit_counter <= bit_counter + 1; 
+                    --     when "0011" => 
+                    --         DOUT(3) <= din;    
+                    --         bit_counter <= bit_counter + 1; 
+                    --     when "0100" => 
+                    --         DOUT(4) <= din;    
+                    --         bit_counter <= bit_counter + 1; 
+                    --     when "0101" => 
+                    --         DOUT(5) <= din;    
+                    --         bit_counter <= bit_counter + 1; 
+                    --     when "0110" => 
+                    --         DOUT(6) <= din;    
+                    --         bit_counter <= bit_counter + 1; 
+                    --     when "0111" => 
+                    --         DOUT(7) <= din;    
+                    --         bit_counter <= bit_counter + 1;
+                    --     when others => null;   
                     end case;
                 
                 end if;
