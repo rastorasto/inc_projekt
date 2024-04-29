@@ -22,7 +22,7 @@ end entity;
 
 -- Architecture implementation (INSERT YOUR IMPLEMENTATION HERE)
 architecture behavioral of UART_RX is
-    signal ACTION_COUNTER        : std_logic_vector(4 downto 0) := "00000";                         
+    signal ACTION_COUNTER        : std_logic_vector(4 downto 0) := "00001";                         
     signal BIT_COUNT            : std_logic_vector(3 downto 0) := "0000";
  --   signal DONE_BIT             : std_logic_vector(1 downto 0) := "00";
     signal CLOCK_ACTIVE         : std_logic := '0';     
@@ -49,30 +49,30 @@ begin
             if RST = '1' then
                 DOUT <= (others => '0');
                 DOUT_VLD <= '0';
-                action_counter <= "00000";
+                action_counter <= "00001";
                 bit_count <= "0000";
             --    done_bit <= "00";
 
             elsif rising_edge(CLK) then
 
                 if clock_active = '0' then
-                    action_counter <= "00000";
+                    action_counter <= "00001";
                 else
                     action_counter <= action_counter + 1;
                 end if;
                 
                 DOUT_VLD <= '0';
 
-                if bit_count = "1111" then
+                if bit_count = "1000" then
                     if data_valid = '1' then
-                        DOUT_VLD <= '1';
                         bit_count <= "0000";
+                        DOUT_VLD <= '1';
                     end if;
                 end if;
 
                 if data_receiving = '1' then
                     if action_counter = "10000" then
-                        action_counter <= "00000";
+                        action_counter <= "00001";
                         
                         case bit_count is
                             when "0000" =>
@@ -98,7 +98,7 @@ begin
                                 bit_count <= "0111";
                             when "0111" =>
                                 DOUT(7) <= DIN;
-                                bit_count <= "1111";
+                                bit_count <= "1000";
                             when others => null;
                         end case;
 

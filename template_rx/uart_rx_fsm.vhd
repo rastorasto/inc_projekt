@@ -44,7 +44,7 @@ begin
                         state <= DATA_BIT;
                     end if;
                 when DATA_BIT =>
-                    if bit_count = "1111" then
+                    if bit_count = "1000" then
                         state <= WAIT_STOP_BIT;
                     end if;
                 when WAIT_STOP_BIT =>
@@ -55,6 +55,7 @@ begin
                     end if;
                 when VALIDATE =>
                     state <= IDLE;
+                when others => null;
             end case;
         end if;
     end process;
