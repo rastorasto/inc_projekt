@@ -12,7 +12,7 @@ entity UART_RX_FSM is
         CLK                   : in std_logic;                     
         RST                   : in std_logic;                     
         DIN                   : in std_logic;                     
-        CLK_CYCLE_CNT         : in std_logic_vector(4 downto 0);  
+        ACTION_COUNTER         : in std_logic_vector(4 downto 0);  
         CLK_CYCLE_ACTIVE      : out std_logic;                    
         BIT_CNT               : in std_logic_vector(3 downto 0);  
         DATA_RECIEVE_ACTIVE   : out std_logic;                    
@@ -47,7 +47,7 @@ begin
                         current_state <= WAIT_FOR_FIRST_BIT; 
                     end if;
                 when WAIT_FOR_FIRST_BIT =>
-                    if CLK_CYCLE_CNT = "10111" then 
+                    if ACTION_COUNTER = "10111" then 
                         current_state <= READ_DATA; 
                     end if;
                 when READ_DATA =>
@@ -56,7 +56,7 @@ begin
                     end if;
                 when WAIT_FOR_STOP_BIT =>
                     if DIN = '1' then 
-                        if CLK_CYCLE_CNT = "01111" then 
+                        if ACTION_COUNTER = "01111" then 
                             current_state <= VALIDATE_DATA; 
                         end if;
                     end if;
