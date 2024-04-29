@@ -34,11 +34,11 @@ begin
         CLK => CLK,
         RST => RST,
         DIN => DIN,
-        ACTION_COUNTER => ACTION_COUNTER,
-        CLOCK_ACTIVE => CLOCK_ACTIVE,
-        BIT_COUNTER => BIT_COUNTER,
-        RECEIVING_DATA => RECEIVING_DATA,
-        VALIDATE_DATA => VALIDATE_DATA
+        ACTION_COUNTER => action_counter,
+        CLOCK_ACTIVE => clock_active,
+        BIT_COUNTER => bit_counter,
+        RECEIVING_DATA => receiving_data,
+        VALIDATE_DATA => validate_data
     );
 
     
@@ -48,60 +48,60 @@ begin
         if RST = '1' then
             DOUT_VLD <= '0';          
             DOUT <= (others => '0');  
-            ACTION_COUNTER <= "00001"; 
-            BIT_COUNTER <= "0000";        
+            action_counter <= "00001"; 
+            bit_counter <= "0000";        
 
         
         elsif rising_edge(CLK) then
 
-            if CLOCK_ACTIVE = '0' then 
-                ACTION_COUNTER <= "00001"; 
+            if clock_active = '0' then 
+                action_counter <= "00001"; 
             else  
-                ACTION_COUNTER <= ACTION_COUNTER + 1; 
+                action_counter <= action_counter + 1; 
             end if;
 
             DOUT_VLD <= '0'; 
 
-            if BIT_COUNTER = "1000" then 
-                if VALIDATE_DATA = '1' then 
-                    BIT_COUNTER <= "0000"; 
+            if bit_counter = "1000" then 
+                if validate_data = '1' then 
+                    bit_counter <= "0000"; 
                     DOUT_VLD <= '1'; 
                 end if;
             end if;
 
-            if RECEIVING_DATA = '1' then 
-                if ACTION_COUNTER >= "10000" then 
-                    ACTION_COUNTER <= "00001"; 
+            if receiving_data = '1' then 
+                if action_counter >= "10000" then 
+                    action_counter <= "00001"; 
 
                     
-                    case BIT_COUNTER is
+                    case bit_counter is
                         when "0000" => 
                             DOUT(0) <= DIN;    
-                            BIT_COUNTER <= "0001"; 
+                            bit_counter <= "0001"; 
                         when "0001" => 
                             DOUT(1) <= DIN;    
-                            BIT_COUNTER <= "0010"; 
+                            bit_counter <= "0010"; 
                         when "0010" => 
                             DOUT(2) <= DIN;    
-                            BIT_COUNTER <= "0011"; 
+                            bit_counter <= "0011"; 
                         when "0011" => 
                             DOUT(3) <= DIN;    
-                            BIT_COUNTER <= "0100"; 
+                            bit_counter <= "0100"; 
                         when "0100" => 
                             DOUT(4) <= DIN;    
-                            BIT_COUNTER <= "0101"; 
+                            bit_counter <= "0101"; 
                         when "0101" => 
                             DOUT(5) <= DIN;    
-                            BIT_COUNTER <= "0110"; 
+                            bit_counter <= "0110"; 
                         when "0110" => 
                             DOUT(6) <= DIN;    
-                            BIT_COUNTER <= "0111"; 
+                            bit_counter <= "0111"; 
                         when "0111" => 
                             DOUT(7) <= DIN;    
-                            BIT_COUNTER <= "1000"; 
+                            bit_counter <= "1000"; 
                         when others => null;   
                     end case;
-
+                
                 end if;
             end if;
         end if;
