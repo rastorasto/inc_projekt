@@ -22,7 +22,7 @@ end entity;
 
 -- Architecture implementation (INSERT YOUR IMPLEMENTATION HERE)
 architecture behavioral of UART_RX is
-    signal FIRST_BIT_MID     : std_logic_vector(2 downto 0) := "000";                        
+    signal FIRST_BIT_MID        : std_logic_vector(4 downto 0) := "000";                        
     signal NEXT_BIT_CLOCK       : std_logic_vector(3 downto 0) := "0000"; 
     signal BIT_COUNT            : std_logic_vector(2 downto 0) := "000";
     signal CLOCK_ACTIVE         : std_logic := '0';     
@@ -49,14 +49,14 @@ begin
             if RST = '1' then
                 DOUT <= (others => '0');
                 DOUT_VLD <= '0';
-                first_bit_mid <= "0000";
+                first_bit_mid <= "00000";
                 next_bit_clock <= "0000";
                 bit_count <= "000";
 
             elsif rising_edge(CLK) then
 
                 if clock_active = '0' then
-                    first_bit_mid <= "0000";
+                    first_bit_mid <= "00000";
                 else 
                     first_bit_mid <= first_bit_mid + 1;
                     next_bit_clock <= next_bit_clock + 1;
