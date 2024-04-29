@@ -1,5 +1,5 @@
 -- uart_rx.vhd: UART controller - receiving (RX) side
--- Author(s): Name Surname (xlogin00)
+-- Author(s): Rastislav Uhliar (xuhliar00)
 
 library ieee;
 use ieee.std_logic_1164.all;
