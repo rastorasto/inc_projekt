@@ -26,8 +26,9 @@ architecture behavioral of UART_RX_FSM is
     signal state : state_type := IDLE;
 begin
 
-    MIDDLE_BIT_CLOCK <= '0' when state = IDLE or state = VALIDATE else '1';
-    NEXT_BIT_CLOCK <= '0' when state = IDLE or state = VALIDATE else '1';
+   --MIDDLE_BIT_CLOCK <= '0' when state = IDLE or state = VALIDATE else '1';
+   -- NEXT_BIT_CLOCK <= '0' when state = IDLE or state = VALIDATE else '1';
+    CLOCK_ACTIVE <= '0' when state = IDLE or state = VALIDATE else '1';
     DATA_RECEIVING <= '1' when state = DATA_BIT else '0';
     DATA_VALID <= '1' when state = VALIDATE else '0';
 
