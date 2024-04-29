@@ -44,8 +44,6 @@ begin
         DATA_VALID => data_valid
     );
 
-   -- DOUT <= (others => '0');
-  --  DOUT_VLD <= '0';
 
         process (CLK) begin
             if RST = '1' then
@@ -69,8 +67,8 @@ begin
 
                 if bit_count = "111" then
                     if data_valid = '1' then
-                        bit_count <= "000";
                         DOUT_VLD <= '1';
+                        bit_count <= "000";
                     end if;
                 end if;
 

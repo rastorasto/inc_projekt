@@ -12,12 +12,12 @@ entity UART_RX_FSM is
        CLK : in std_logic;
        RST : in std_logic;
        DIN : in std_logic;
-       MIDDLE_BIT_CLOCK : in std_logic_vector(2 downto 0); -- Prejde do polovice bitu
-       NEXT_BIT_CLOCK : in std_logic_vector(3 downto 0); -- Pocka do polovice dalsieho bitu
-       CLOCK_ACTIVE : out std_logic; -- Clock signal
-       BIT_COUNT : in std_logic_vector(2 downto 0); -- Pocet bitov
-       DATA_RECEIVING : out std_logic; -- Data receiving
-       DATA_VALID : out std_logic -- Data valid
+       MIDDLE_BIT_CLOCK : in std_logic_vector(2 downto 0); -- Pocka do polovice start bitu
+       NEXT_BIT_CLOCK : in std_logic_vector(3 downto 0);   -- Pocka do polovice dalsieho bitu
+       CLOCK_ACTIVE : out std_logic;                       -- Aktivuje hodiny
+       BIT_COUNT : in std_logic_vector(2 downto 0);        -- Pocitac bitov
+       DATA_RECEIVING : out std_logic;                     -- Prijimanie dat
+       DATA_VALID : out std_logic                          -- Validita prijatych dat
     );
 end entity;
 
@@ -26,8 +26,6 @@ architecture behavioral of UART_RX_FSM is
     signal state : state_type := IDLE;
 begin
 
-   --MIDDLE_BIT_CLOCK <= '0' when state = IDLE or state = VALIDATE else '1';
-   -- NEXT_BIT_CLOCK <= '0' when state = IDLE or state = VALIDATE else '1';
     CLOCK_ACTIVE <= '0' when state = IDLE or state = VALIDATE else '1';
     DATA_RECEIVING <= '1' when state = DATA_BIT else '0';
     DATA_VALID <= '1' when state = VALIDATE else '0';
@@ -60,7 +58,7 @@ begin
                         end if;
                     end if;
                 when VALIDATE =>
-                    if DOUT_VLD = '1' then
+                    if BIT_COUNT = "000" then
                         state <= IDLE;
                     end if;
             end case;
