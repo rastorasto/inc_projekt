@@ -25,6 +25,7 @@ architecture behavioral of UART_RX is
     signal FIRST_BIT_MID        : std_logic_vector(4 downto 0) := "00000";                        
     signal NEXT_BIT_CLOCK       : std_logic_vector(3 downto 0) := "0000"; 
     signal BIT_COUNT            : std_logic_vector(2 downto 0) := "000";
+    signal DONE_BIT             : std_logic_vector(1 downto 0) := "00";
     signal CLOCK_ACTIVE         : std_logic := '0';     
     signal DATA_RECEIVING       : std_logic := '0';                         
     signal DATA_VALID           : std_logic := '0';                         
