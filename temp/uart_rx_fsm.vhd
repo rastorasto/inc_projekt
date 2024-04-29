@@ -1,10 +1,9 @@
 -- uart_rx_fsm.vhd: UART controller - finite state machine controlling RX side
--- Author(s): Rastislav Uhliar (xlogin00)
+-- Author(s): Rastislav Uhliar (xuhliar00)
 
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
-
 
 
 entity UART_RX_FSM is
@@ -21,47 +20,45 @@ entity UART_RX_FSM is
 end entity;
 
 architecture behavioral of UART_RX_FSM is
-    type fsm_states is (NOT_ACTIVE, WAIT_FOR_FIRST_BIT, READ_DATA, WAIT_FOR_STOP_BIT, VALIDATE_DATA);  
-    signal current_state : fsm_states := NOT_ACTIVE;  
+    type fsm_states is (IDLE, WAIT_FOR_BIT, READ_BIT, WAIT_STOP, VALIDATING);  
+    signal current_state : fsm_states := IDLE;  
 begin
 
-    
-    CLOCK_ACTIVE <= '0' when current_state = NOT_ACTIVE or current_state = VALIDATE_DATA else '1'; 
-    VALIDATING_DATA <= '1' when current_state = VALIDATE_DATA else '0'; 
-    RECEIVING_DATA <= '1' when current_state = READ_DATA else '0'; 
+
+    CLOCK_ACTIVE <= '0' when current_state = IDLE or current_state = VALIDATING else '1'; 
+    VALIDATING_DATA <= '1' when current_state = VALIDATING else '0'; 
+    RECEIVING_DATA <= '1' when current_state = READ_BIT else '0'; 
 
     
     process(CLK) begin
 
         
         if RST = '1' then
-            current_state <= NOT_ACTIVE; 
+            current_state <= IDLE; 
             
-        
         elsif rising_edge(CLK) then
-
-            
+   
             case current_state is
-                when NOT_ACTIVE => 
+                when IDLE => 
                     if DIN = '0' then 
-                        current_state <= WAIT_FOR_FIRST_BIT; 
+                        current_state <= WAIT_FOR_BIT; 
                     end if;
-                when WAIT_FOR_FIRST_BIT =>
+                when WAIT_FOR_BIT =>
                     if ACTION_COUNTER = "10111" then 
-                        current_state <= READ_DATA; 
+                        current_state <= READ_BIT; 
                     end if;
-                when READ_DATA =>
+                when READ_BIT =>
                     if BIT_COUNTER = "1000" then 
-                        current_state <= WAIT_FOR_STOP_BIT; 
+                        current_state <= WAIT_STOP; 
                     end if;
-                when WAIT_FOR_STOP_BIT =>
+                when WAIT_STOP =>
                     if DIN = '1' then 
                         if ACTION_COUNTER = "01111" then 
-                            current_state <= VALIDATE_DATA; 
+                            current_state <= VALIDATING; 
                         end if;
                     end if;
-                when VALIDATE_DATA =>
-                    current_state <= NOT_ACTIVE; 
+                when VALIDATING =>
+                    current_state <= IDLE; 
                 when others => null; 
             end case;
 

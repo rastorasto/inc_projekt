@@ -5,8 +5,6 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 
-
-
 -- Entity declaration (DO NOT ALTER THIS PART!)
 entity UART_RX is
     port(
@@ -19,7 +17,6 @@ entity UART_RX is
 end entity;
 
 
-
 -- Architecture implementation (INSERT YOUR IMPLEMENTATION HERE)
 architecture behavioral of UART_RX is
     signal ACTION_COUNTER        : std_logic_vector(4 downto 0) := "00001";  
@@ -27,6 +24,7 @@ architecture behavioral of UART_RX is
     signal BIT_COUNTER              : std_logic_vector(3 downto 0) := "0000";   
     signal RECEIVING_DATA  : std_logic := '0';                         
     signal VALIDATING_DATA : std_logic := '0';                         
+
 
 begin
     fsm: entity work.UART_RX_FSM
@@ -44,14 +42,12 @@ begin
     
     process (CLK) begin
         
-        
         if RST = '1' then
             DOUT_VLD <= '0';          
             DOUT <= (others => '0');  
             action_counter <= "00001"; 
             bit_counter <= "0000";        
 
-        
         elsif rising_edge(CLK) then
 
             if clock_active = '0' then 
