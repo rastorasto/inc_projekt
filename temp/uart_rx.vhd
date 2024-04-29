@@ -103,7 +103,7 @@ begin
                     --         DOUT(7) <= din;    
                     --         bit_counter <= bit_counter + 1;
                     --     when others => null;   
-                    end case;
+                    --end case;
                 
                 end if;
             end if;
