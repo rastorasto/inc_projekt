@@ -51,7 +51,7 @@ begin
             if RST = '1' then
                 DOUT <= (others => '0');
                 DOUT_VLD <= '0';
-                first_bit_mid <= "00000";
+                action_counter <= "00000";
                -- next_bit_clock <= "0000";
                 bit_count <= "000";
                 done_bit <= "00";
@@ -59,7 +59,7 @@ begin
             elsif rising_edge(CLK) then
 
                 if clock_active = '0' then
-                    first_bit_mid <= "00000";
+                    action_counter <= "00000";
                --     next_bit_clock <= "0000";
                 else
                     action_counter <= action_counter + 1;
@@ -76,7 +76,7 @@ begin
 
                 if data_receiving = '1' then
                     if action_counter = "10000" then
-                        next_bit_clock <= "0000";
+                        action_counter <= "0000";
                         
                         case bit_count is
                             when "000" =>
