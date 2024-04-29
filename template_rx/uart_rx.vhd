@@ -88,7 +88,7 @@ begin
                             BIT_COUNT <= "011";
                         elsif BIT_COUNT = "011" then
                             DOUT(3) <= DIN;
-                            BIT_COUNT <= "100"; then
+                            BIT_COUNT <= "100";
                         elsif BIT_COUNT = "100" then
                             DOUT(4) <= DIN;
                             BIT_COUNT <= "101";
@@ -102,9 +102,7 @@ begin
                             DOUT(7) <= DIN;
                             BIT_COUNT <= "000";
                         end if;
-
                     end if;
-
             end if;
         end if;
     end process;
