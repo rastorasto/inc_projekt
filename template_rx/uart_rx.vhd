@@ -22,7 +22,7 @@ end entity;
 
 -- Architecture implementation (INSERT YOUR IMPLEMENTATION HERE)
 architecture behavioral of UART_RX is
-    signal MIDDLE_BIT_CLOCK     : std_logic_vector(3 downto 0) := "0000";                        
+    signal MIDDLE_BIT_CLOCK     : std_logic_vector(2 downto 0) := "000";                        
     signal NEXT_BIT_CLOCK       : std_logic_vector(3 downto 0) := "0000"; 
     signal BIT_COUNT            : std_logic_vector(2 downto 0) := "000";
     signal CLOCK_ACTIVE         : std_logic := '0';     
