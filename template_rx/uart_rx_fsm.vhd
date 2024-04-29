@@ -12,7 +12,7 @@ entity UART_RX_FSM is
        CLK : in std_logic;
        RST : in std_logic;
        DIN : in std_logic;
-       MIDDLE_BIT_CLOCK : in std_logic_vector(3 downto 0); -- Prejde do polovice bitu
+       MIDDLE_BIT_CLOCK : in std_logic_vector(2 downto 0); -- Prejde do polovice bitu
        NEXT_BIT_CLOCK : in std_logic_vector(3 downto 0); -- Pocka do polovice dalsieho bitu
        CLOCK_ACTIVE : out std_logic; -- Clock signal
        BIT_COUNT : in std_logic_vector(2 downto 0); -- Pocet bitov
