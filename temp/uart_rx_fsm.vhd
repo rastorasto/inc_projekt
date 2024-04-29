@@ -24,18 +24,23 @@ architecture behavioral of UART_RX_FSM is
     type fsm_states is (NOT_ACTIVE, WAIT_FOR_FIRST_BIT, READ_DATA, WAIT_FOR_STOP_BIT, VALIDATE_DATA);  
     signal current_state : fsm_states := NOT_ACTIVE;  
 begin
+
     
     CLOCK_ACTIVE <= '0' when current_state = NOT_ACTIVE or current_state = VALIDATE_DATA else '1'; 
     VALIDATING_DATA <= '1' when current_state = VALIDATE_DATA else '0'; 
     RECEIVING_DATA <= '1' when current_state = READ_DATA else '0'; 
+
     
     process(CLK) begin
 
+        
         if RST = '1' then
             current_state <= NOT_ACTIVE; 
             
+        
         elsif rising_edge(CLK) then
 
+            
             case current_state is
                 when NOT_ACTIVE => 
                     if DIN = '0' then 
@@ -57,7 +62,9 @@ begin
                     end if;
                 when VALIDATE_DATA =>
                     current_state <= NOT_ACTIVE; 
+                when others => null; 
             end case;
+
         end if;
     end process;
 end architecture;
