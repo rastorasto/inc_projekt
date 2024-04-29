@@ -12,7 +12,7 @@ entity UART_RX_FSM is
        CLK : in std_logic;
        RST : in std_logic;
        DIN : in std_logic;
-       MIDDLE_BIT_CLOCK : in std_logic_vector(2 downto 0); -- Pocka do polovice start bitu
+       FIRST_BIT_MID : in std_logic_vector(4 downto 0);    -- Pocka do polovice prveho bitu
        NEXT_BIT_CLOCK : in std_logic_vector(3 downto 0);   -- Pocka do polovice dalsieho bitu
        CLOCK_ACTIVE : out std_logic;                       -- Aktivuje hodiny
        BIT_COUNT : in std_logic_vector(2 downto 0);        -- Pocitac bitov
@@ -40,27 +40,21 @@ begin
                         state <= WAIT_MID;
                     end if;
                 when WAIT_MID =>
-                    if MIDDLE_BIT_CLOCK = "111" then
+                    if FIRST_BIT_MID = "10111" then
                         state <= DATA_BIT;
                     end if;
                 when DATA_BIT =>
-                    if NEXT_BIT_CLOCK = "1111" then
-                        if BIT_COUNT = "111" then
-                            state <= WAIT_STOP_BIT;
-                        else
-                            state <= DATA_BIT;
-                        end if;
+                    if BIT_COUNT = "111" then
+                        state <= WAIT_STOP_BIT;
                     end if;
                 when WAIT_STOP_BIT =>
                     if DIN = '1' then
-                        if MIDDLE_BIT_CLOCK = "111" then
+                        if NEXT_BIT_CLOCK = "1111" then
                             state <= VALIDATE;
                         end if;
                     end if;
                 when VALIDATE =>
-                    if BIT_COUNT = "000" then
-                        state <= IDLE;
-                    end if;
+                    state <= IDLE;
             end case;
         end if;
     end process;
