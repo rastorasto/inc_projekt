@@ -41,7 +41,8 @@ begin
         BIT_COUNT => bit_count,
         CLOCK_ACTIVE => clock_active,
         DATA_RECEIVING => data_receiving,
-        DATA_VALID => data_valid
+        DATA_VALID => data_valid,
+        DONE_BIT => done_bit
     );
 
 
@@ -52,6 +53,7 @@ begin
                 first_bit_mid <= "00000";
                 next_bit_clock <= "0000";
                 bit_count <= "000";
+                done_bit <= "00";
 
             elsif rising_edge(CLK) then
 
@@ -59,8 +61,11 @@ begin
                     first_bit_mid <= "00000";
                     next_bit_clock <= "0000";
                 else
-                    first_bit_mid <= first_bit_mid + 1;
-                    next_bit_clock <= next_bit_clock + 1;
+                    if(first_bit_mid > "10111") then
+                        next_bit_clock <= next_bit_clock + 1;
+                    else 
+                        first_bit_mid <= first_bit_mid + 1;
+                    end if;
                 end if;
                 
                 DOUT_VLD <= '0';
@@ -100,6 +105,7 @@ begin
                                 bit_count <= "111";
                             when "111" =>
                                 DOUT(7) <= DIN;
+                                done_bit <= "11";
                             when others => null;
                         end case;
 
