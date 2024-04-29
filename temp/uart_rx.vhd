@@ -46,7 +46,6 @@ begin
             DOUT_VLD <= '0';          
             DOUT <= (others => '0');  
             action_counter <= "00000"; 
-            final_bit <= "00";
             bit_counter <= "0000";        
 
         elsif rising_edge(CLK) then
