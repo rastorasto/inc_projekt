@@ -76,7 +76,7 @@ begin
 
                 if data_receiving = '1' then
                     if action_counter = "10000" then
-                        action_counter <= "0000";
+                        action_counter <= "00000";
                         
                         case bit_count is
                             when "000" =>
