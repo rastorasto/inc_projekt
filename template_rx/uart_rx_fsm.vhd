@@ -17,7 +17,7 @@ entity UART_RX_FSM is
        CLOCK_ACTIVE : in std_logic; -- Clock signal
        BIT_COUNT : in std_logic_vector(3 downto 0); -- Pocet bitov
        DATA_RECEIVING : out std_logic; -- Data receiving
-       DATA_VALID : out std_logic; -- Data valid
+       DATA_VALID : out std_logic -- Data valid
     );
 end entity;
 
