@@ -35,12 +35,13 @@ begin
     port map (
         CLK => CLK,
         RST => RST,
-        MIDDLE_BIT_CLOCK => MIDDLE_BIT_CLOCK,
-        NEXT_BIT_CLOCK => NEXT_BIT_CLOCK,
-        BIT_COUNT => BIT_COUNT,
-        CLOCK_ACTIVE => CLOCK_ACTIVE,
-        DATA_RECEIVING => DATA_RECEIVING,
-        DATA_VALID => DATA_VALID
+        DIN => DIN,
+        MIDDLE_BIT_CLOCK => middle_bit_clock,
+        NEXT_BIT_CLOCK => next_bit_clock,
+        BIT_COUNT => bit_count,
+        CLOCK_ACTIVE => clock_active,
+        DATA_RECEIVING => data_receiving,
+        DATA_VALID => data_valid
     );
 
    -- DOUT <= (others => '0');
@@ -50,57 +51,57 @@ begin
             if RST = '1' then
                 DOUT <= (others => '0');
                 DOUT_VLD <= '0';
-                MIDDLE_BIT_CLOCK <= "000";
-                NEXT_BIT_CLOCK <= "0000";
-                BIT_COUNT <= "000";
+                middle_bit_clock <= "000";
+                next_bit_clock <= "0000";
+                bit_count <= "000";
 
             elsif rising_edge(CLK) then
-                if CLOCK_ACTIVE = '0' then
-                    MIDDLE_BIT_CLOCK <= "000";
+                if clock_active = '0' then
+                    middle_bit_clock <= "000";
                 else 
-                    MIDDLE_BIT_CLOCK <= MIDDLE_BIT_CLOCK + 1;
-                    if MIDDLE_BIT_CLOCK = "111" then
-                        NEXT_BIT_CLOCK <= NEXT_BIT_CLOCK + 1;
+                    middle_bit_clock <= middle_bit_clock + 1;
+                    if middle_bit_clock = "111" then
+                        next_bit_clock <= next_bit_clock + 1;
                     end if;
                 end if;
                 
                 DOUT_VLD <= '0';
 
-                if BIT_COUNT = "111" then
-                    if DATA_VALID = '1' then
-                        BIT_COUNT <= "000";
+                if bit_count = "111" then
+                    if data_valid = '1' then
+                        bit_count <= "000";
                         DOUT_VLD <= '1';
                     end if;
                 end if;
 
-                if DATA_RECEIVING = '1' then
-                    if NEXT_BIT_CLOCK >= "1111" then
-                        NEXT_BIT_CLOCK <= "0000";
+                if data_receiving = '1' then
+                    if next_bit_clock >= "1111" then
+                        next_bit_clock <= "0000";
                         
-                        if BIT_COUNT = "000" then
+                        if bit_count = "000" then
                             DOUT(0) <= DIN;
-                            BIT_COUNT <= "001";
-                        elsif BIT_COUNT = "001" then
+                            bit_count <= "001";
+                        elsif bit_count = "001" then
                             DOUT(1) <= DIN;
-                            BIT_COUNT <= "010";
-                        elsif BIT_COUNT = "010" then
+                            bit_count <= "010";
+                        elsif bit_count = "010" then
                             DOUT(2) <= DIN;
-                            BIT_COUNT <= "011";
-                        elsif BIT_COUNT = "011" then
+                            bit_count <= "011";
+                        elsif bit_count = "011" then
                             DOUT(3) <= DIN;
-                            BIT_COUNT <= "100";
-                        elsif BIT_COUNT = "100" then
+                            bit_count <= "100";
+                        elsif bit_count = "100" then
                             DOUT(4) <= DIN;
-                            BIT_COUNT <= "101";
-                        elsif BIT_COUNT = "101" then
+                            bit_count <= "101";
+                        elsif bit_count = "101" then
                             DOUT(5) <= DIN;
-                            BIT_COUNT <= "110";
-                        elsif BIT_COUNT = "110" then
+                            bit_count <= "110";
+                        elsif bit_count = "110" then
                             DOUT(6) <= DIN;
-                            BIT_COUNT <= "111";
-                        elsif BIT_COUNT = "111" then
+                            bit_count <= "111";
+                        elsif bit_count = "111" then
                             DOUT(7) <= DIN;
-                            BIT_COUNT <= "000";
+                            bit_count <= "000";
                         end if;
                     end if;
             end if;
