@@ -13,10 +13,10 @@ entity UART_RX_FSM is
         RST                   : in std_logic;                     
         DIN                   : in std_logic;                     
         ACTION_COUNTER         : in std_logic_vector(4 downto 0);  
-        CLK_CYCLE_ACTIVE      : out std_logic;                    
-        BIT_CNT               : in std_logic_vector(3 downto 0);  
-        DATA_RECIEVE_ACTIVE   : out std_logic;                    
-        DATA_VALIDATE_ACTIVE  : out std_logic                     
+        CLOCK_ACTIVE      : out std_logic;                    
+        BIT_COUNTER               : in std_logic_vector(3 downto 0);  
+        RECEIVING_DATA   : out std_logic;                    
+        VALIDATING_DATA  : out std_logic                     
      );
 end entity;
 
@@ -24,23 +24,18 @@ architecture behavioral of UART_RX_FSM is
     type fsm_states is (NOT_ACTIVE, WAIT_FOR_FIRST_BIT, READ_DATA, WAIT_FOR_STOP_BIT, VALIDATE_DATA);  
     signal current_state : fsm_states := NOT_ACTIVE;  
 begin
-
     
-    CLK_CYCLE_ACTIVE <= '0' when current_state = NOT_ACTIVE or current_state = VALIDATE_DATA else '1'; 
-    DATA_VALIDATE_ACTIVE <= '1' when current_state = VALIDATE_DATA else '0'; 
-    DATA_RECIEVE_ACTIVE <= '1' when current_state = READ_DATA else '0'; 
-
+    CLOCK_ACTIVE <= '0' when current_state = NOT_ACTIVE or current_state = VALIDATE_DATA else '1'; 
+    VALIDATING_DATA <= '1' when current_state = VALIDATE_DATA else '0'; 
+    RECEIVING_DATA <= '1' when current_state = READ_DATA else '0'; 
     
     process(CLK) begin
 
-        
         if RST = '1' then
             current_state <= NOT_ACTIVE; 
             
-        
         elsif rising_edge(CLK) then
 
-            
             case current_state is
                 when NOT_ACTIVE => 
                     if DIN = '0' then 
@@ -51,7 +46,7 @@ begin
                         current_state <= READ_DATA; 
                     end if;
                 when READ_DATA =>
-                    if BIT_CNT = "1000" then 
+                    if BIT_COUNTER = "1000" then 
                         current_state <= WAIT_FOR_STOP_BIT; 
                     end if;
                 when WAIT_FOR_STOP_BIT =>
@@ -62,9 +57,7 @@ begin
                     end if;
                 when VALIDATE_DATA =>
                     current_state <= NOT_ACTIVE; 
-                when others => null; 
             end case;
-
         end if;
     end process;
 end architecture;
