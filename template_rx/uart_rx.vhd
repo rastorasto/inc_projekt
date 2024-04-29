@@ -40,7 +40,7 @@ begin
         BIT_COUNT => bit_count,
         CLOCK_ACTIVE => clock_active,
         DATA_RECEIVING => data_receiving,
-        DATA_VALID => data_valid,
+        DATA_VALID => data_valid
       --  DONE_BIT => done_bit
     );
 

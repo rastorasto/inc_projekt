@@ -12,7 +12,7 @@ entity UART_RX_FSM is
        CLK : in std_logic;
        RST : in std_logic;
        DIN : in std_logic;
-       DONE_BIT : in std_logic_vector(1 downto 0);                            -- Pocka na koniec prijatych dat
+   --    DONE_BIT : in std_logic_vector(1 downto 0);                            -- Pocka na koniec prijatych dat
        ACTION_COUNTER : in std_logic_vector(4 downto 0);    -- Pocka do polovice prveho bitu
        CLOCK_ACTIVE : out std_logic;                       -- Aktivuje hodiny
        BIT_COUNT : in std_logic_vector(3 downto 0);        -- Pocitac bitov
