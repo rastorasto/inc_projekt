@@ -19,8 +19,8 @@ end entity;
 
 -- Architecture implementation (INSERT YOUR IMPLEMENTATION HERE)
 architecture behavioral of UART_RX is
-    signal ACTION_COUNTER : std_logic_vector(4 downto 0) := '0'; 
-    signal BIT_COUNTER    : std_logic_vector(3 downto 0) := '0'; 
+    signal ACTION_COUNTER : std_logic_vector(4 downto 0) := (others => '0'); 
+    signal BIT_COUNTER    : std_logic_vector(3 downto 0) := (others => '0'); 
     signal CLOCK_ACTIVE   : std_logic := '0'; 
     signal VALIDATING_DATA: std_logic := '0';                           
     signal RECEIVING_DATA : std_logic := '0';                                                 
@@ -45,13 +45,13 @@ begin
         if rst = '1' then
             DOUT_VLD <= '0';          
             DOUT <= (others => '0');  
-            action_counter <= '0'; 
-            bit_counter <= '0';        
+            action_counter <= (others => '0'); 
+            bit_counter <= (others => '0');        
 
         elsif rising_edge(clk) then
 
             if clock_active = '0' then 
-                action_counter <= '0'; 
+                action_counter <= (others => '0'); 
             else  
                 action_counter <= action_counter + 1; 
             end if;
@@ -60,17 +60,17 @@ begin
 
             if bit_counter = "1000" then 
                 if validating_data = '1' then 
-                    bit_counter <= '0'; 
+                    bit_counter <= (others => '0');
                     DOUT_VLD <= '1'; 
                 end if;
             end if;
 
             if receiving_data = '1' then 
                 if action_counter >= "01111" then 
-                    action_counter <= '0'; 
+                    action_counter <= (others => '0');
 
                     for i in DOUT'range loop
-                        if bit_counter = i then
+                        if bit_counter = to_unsigned(i, 4) then
                             DOUT(i) <= din;
                             bit_counter <= bit_counter + 1;
                             exit;  -- Exit loop after setting the corresponding bit
